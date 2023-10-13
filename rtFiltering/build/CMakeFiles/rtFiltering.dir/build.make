@@ -69,28 +69,28 @@ include CMakeFiles/rtFiltering.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/rtFiltering.dir/flags.make
 
-CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o: CMakeFiles/rtFiltering.dir/flags.make
-CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o: /Users/jasmine/Documents/CS5330/rtFiltering/filterTutorial.cpp
-CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o: CMakeFiles/rtFiltering.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/jasmine/Documents/CS5330/rtFiltering/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o -MF CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o.d -o CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o -c /Users/jasmine/Documents/CS5330/rtFiltering/filterTutorial.cpp
+CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o: CMakeFiles/rtFiltering.dir/flags.make
+CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o: /Users/jasmine/Documents/CS5330/rtFiltering/vidDisplay.cpp
+CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o: CMakeFiles/rtFiltering.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/jasmine/Documents/CS5330/rtFiltering/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o -MF CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o.d -o CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o -c /Users/jasmine/Documents/CS5330/rtFiltering/vidDisplay.cpp
 
-CMakeFiles/rtFiltering.dir/filterTutorial.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtFiltering.dir/filterTutorial.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jasmine/Documents/CS5330/rtFiltering/filterTutorial.cpp > CMakeFiles/rtFiltering.dir/filterTutorial.cpp.i
+CMakeFiles/rtFiltering.dir/vidDisplay.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/rtFiltering.dir/vidDisplay.cpp.i"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jasmine/Documents/CS5330/rtFiltering/vidDisplay.cpp > CMakeFiles/rtFiltering.dir/vidDisplay.cpp.i
 
-CMakeFiles/rtFiltering.dir/filterTutorial.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtFiltering.dir/filterTutorial.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jasmine/Documents/CS5330/rtFiltering/filterTutorial.cpp -o CMakeFiles/rtFiltering.dir/filterTutorial.cpp.s
+CMakeFiles/rtFiltering.dir/vidDisplay.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/rtFiltering.dir/vidDisplay.cpp.s"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jasmine/Documents/CS5330/rtFiltering/vidDisplay.cpp -o CMakeFiles/rtFiltering.dir/vidDisplay.cpp.s
 
 # Object files for target rtFiltering
 rtFiltering_OBJECTS = \
-"CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o"
+"CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o"
 
 # External object files for target rtFiltering
 rtFiltering_EXTERNAL_OBJECTS =
 
-rtFiltering: CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o
+rtFiltering: CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o
 rtFiltering: CMakeFiles/rtFiltering.dir/build.make
 rtFiltering: /usr/local/lib/libopencv_gapi.4.8.1.dylib
 rtFiltering: /usr/local/lib/libopencv_stitching.4.8.1.dylib

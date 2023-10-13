@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o"
-  "CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o.d"
+  "CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o"
+  "CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o.d"
   "rtFiltering"
   "rtFiltering.pdb"
 )

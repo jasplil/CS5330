@@ -1,7 +1,3 @@
-/* Bruce Maxwell
-   Fall 2023
-   CS 5330
-*/
 #include <cstdio>
 #include <cstring>
 #include <opencv2/opencv.hpp>
@@ -107,10 +103,15 @@ int main(int argc, char *argv[]) {
   // cv::imshow( "gradx", displayit );
 
   // wait for a keystroke
-  cv::waitKey(0);
+  while (true) {
+    int key = cv::waitKey(1);
+    if (key == 'q' || key == 'Q') {
+      break;
+    }
+  }
 
-  // // get rid of the window
-  // cv::destroyWindow( "original" );
+  // get rid of the window
+  cv::destroyWindow( "original" );
 
   return(0);
 }

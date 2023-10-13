@@ -129,29 +129,29 @@ rtFiltering/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/build
 .PHONY : rtFiltering/fast
 
-filterTutorial.o: filterTutorial.cpp.o
-.PHONY : filterTutorial.o
+vidDisplay.o: vidDisplay.cpp.o
+.PHONY : vidDisplay.o
 
 # target to build an object file
-filterTutorial.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filterTutorial.cpp.o
-.PHONY : filterTutorial.cpp.o
+vidDisplay.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o
+.PHONY : vidDisplay.cpp.o
 
-filterTutorial.i: filterTutorial.cpp.i
-.PHONY : filterTutorial.i
+vidDisplay.i: vidDisplay.cpp.i
+.PHONY : vidDisplay.i
 
 # target to preprocess a source file
-filterTutorial.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filterTutorial.cpp.i
-.PHONY : filterTutorial.cpp.i
+vidDisplay.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/vidDisplay.cpp.i
+.PHONY : vidDisplay.cpp.i
 
-filterTutorial.s: filterTutorial.cpp.s
-.PHONY : filterTutorial.s
+vidDisplay.s: vidDisplay.cpp.s
+.PHONY : vidDisplay.s
 
 # target to generate assembly for a file
-filterTutorial.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filterTutorial.cpp.s
-.PHONY : filterTutorial.cpp.s
+vidDisplay.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/vidDisplay.cpp.s
+.PHONY : vidDisplay.cpp.s
 
 # Help Target
 help:
@@ -162,9 +162,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... rtFiltering"
-	@echo "... filterTutorial.o"
-	@echo "... filterTutorial.i"
-	@echo "... filterTutorial.s"
+	@echo "... vidDisplay.o"
+	@echo "... vidDisplay.i"
+	@echo "... vidDisplay.s"
 .PHONY : help
 
 
