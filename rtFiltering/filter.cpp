@@ -9,6 +9,21 @@
   dst is the output image, allocated by the function
 */
 
+int greyscale_avg(const cv::Mat &src, cv::Mat &dst) {
+  dst = cv::Mat::zeros( src.size(), CV_16SC3 );
+
+  for (int i = 0; i < src.rows; i++) {
+    for (int j = 0; j < src.cols; j++) {
+      cv::Vec3b intensity = src.at<cv::Vec3b>(i, j);
+      int avg = (intensity[0] + intensity[1] + intensity[2]) / 3;
+      dst.at<cv::Vec3s>(i, j)[0] = avg;
+      dst.at<cv::Vec3s>(i, j)[1] = avg;
+      dst.at<cv::Vec3s>(i, j)[2] = avg;
+    }
+  }
+  return (0);
+}
+
 int gradx( const cv::Mat &src, cv::Mat &dst ) {
 
   // allocate the dst image
