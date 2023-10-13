@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.10)
+project(rtFiltering)
+find_package(OpenCV REQUIRED)
+add_executable(rtFiltering filterTutorial.cpp)
+target_link_libraries(rtFiltering ${OpenCV_LIBS})
