@@ -1,10 +1,3 @@
-/*
-  Bruce Maxwell
-  Fall 2023
-  CS 5330
-*/
-
-
 #include <cstdio>
 #include <cstring>
 #include <opencv2/opencv.hpp>

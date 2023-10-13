@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
     printf("Expected size: %d %d\n", refS.width, refS.height);
     cv::namedWindow("Video", 1); // identifies a window
     cv::Mat frame;
+    bool isGray = false;
 
     for(;;) {
       *capdev >> frame; // get a new frame from the camera, treat as a stream
@@ -24,6 +25,11 @@ int main(int argc, char *argv[]) {
       if( frame.empty() ) {
         printf("frame is empty\n");
         break;
+      }
+
+      if (isGray) {
+          // Convert the frame to grayscale
+          cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
       }
 
       cv::imshow("Video", frame);
@@ -39,6 +45,10 @@ int main(int argc, char *argv[]) {
           // Save the current frame to a file
           cv::imwrite("captured_image.jpg", frame);
           std::cout << "Image saved as captured_image.jpg" << std::endl;
+      }
+
+      if (key == 'g' || key == 'G') {
+        isGray = !isGray;
       }
     }
 }
