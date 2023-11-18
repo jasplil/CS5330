@@ -56,19 +56,26 @@ int main(int argc, char *argv[]) {
       // if (key == 'g' || key == 'G') {
       //   isGray = !isGray;
       // }
-      cv::Mat grayFrame;
-      grayFrame = cv::Mat::zeros(frame.size(), frame.type());
-      frame.copyTo(grayFrame);
+      cv::Mat keyFrame;
+
+      keyFrame = cv::Mat::zeros(frame.size(), frame.type());
+      frame.copyTo(keyFrame);
 
       if (isGray) {
-          std::cout << "function called" << std::endl;
-          greyscale_avg(frame, grayFrame);
+          // std::cout << "greyScale func called" << std::endl;
+          // greyscaleAvg(frame, keyFrame);
+          std::cout << "blur func called" << std::endl;
+          gaussianFilter(frame, keyFrame);
       }
 
       if (key == 'a') {
+        // isGray = !isGray;
+      }
+
+      if (key == 'b') {
         isGray = !isGray;
       }
 
-      cv::imshow("Video", grayFrame);
+      cv::imshow("Video", keyFrame);
     }
 }
