@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include <opencv2/opencv.hpp>
-#include "filter.h"
+#include "filter.hpp"
 
 /*
   Function that calculates the horizontal gradient
@@ -10,17 +10,20 @@
 */
 
 int greyscale_avg(const cv::Mat &src, cv::Mat &dst) {
-  dst = cv::Mat::zeros( src.size(), CV_16SC3 );
+  dst = cv::Mat::zeros(src.size(), CV_8UC3);
+  int m = src.rows;
+  int n = src.cols;
 
-  for (int i = 0; i < src.rows; i++) {
-    for (int j = 0; j < src.cols; j++) {
-      cv::Vec3b intensity = src.at<cv::Vec3b>(i, j);
-      int avg = (intensity[0] + intensity[1] + intensity[2]) / 3;
-      dst.at<cv::Vec3s>(i, j)[0] = avg;
-      dst.at<cv::Vec3s>(i, j)[1] = avg;
-      dst.at<cv::Vec3s>(i, j)[2] = avg;
+  for (int i = 0; i < m; i++) {
+    const cv::Vec3b *rptr = src.ptr<cv::Vec3b>(i);
+    cv::Vec3b *dptr = dst.ptr<cv::Vec3b>(i);
+    for (int j = 0; j < n; j++) {
+      for (int k = 0; k < 3; k++) {
+        dptr[j][k] = std::round((rptr[j][0] + rptr[j][1] + rptr[j][2]) / 3);
+      }
     }
   }
+
   return (0);
 }
 

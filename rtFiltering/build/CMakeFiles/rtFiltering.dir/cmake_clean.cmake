@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/rtFiltering.dir/filter.cpp.o"
+  "CMakeFiles/rtFiltering.dir/filter.cpp.o.d"
   "CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o"
   "CMakeFiles/rtFiltering.dir/vidDisplay.cpp.o.d"
   "rtFiltering"

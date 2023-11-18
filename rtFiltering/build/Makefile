@@ -129,6 +129,30 @@ rtFiltering/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/build
 .PHONY : rtFiltering/fast
 
+filter.o: filter.cpp.o
+.PHONY : filter.o
+
+# target to build an object file
+filter.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filter.cpp.o
+.PHONY : filter.cpp.o
+
+filter.i: filter.cpp.i
+.PHONY : filter.i
+
+# target to preprocess a source file
+filter.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filter.cpp.i
+.PHONY : filter.cpp.i
+
+filter.s: filter.cpp.s
+.PHONY : filter.s
+
+# target to generate assembly for a file
+filter.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/rtFiltering.dir/build.make CMakeFiles/rtFiltering.dir/filter.cpp.s
+.PHONY : filter.cpp.s
+
 vidDisplay.o: vidDisplay.cpp.o
 .PHONY : vidDisplay.o
 
@@ -162,6 +186,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... rtFiltering"
+	@echo "... filter.o"
+	@echo "... filter.i"
+	@echo "... filter.s"
 	@echo "... vidDisplay.o"
 	@echo "... vidDisplay.i"
 	@echo "... vidDisplay.s"

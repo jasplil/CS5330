@@ -1,38 +1,44 @@
 #include <opencv2/opencv.hpp>
-// using namespace cv
+#include "filter.hpp"
 
 int main(int argc, char *argv[]) {
     cv::VideoCapture *capdev;
     
     // open the video device
     capdev = new cv::VideoCapture(0);
+
+    // check if video device can be opened with the given index
     if( !capdev->isOpened() ) {
       printf("Unable to open video device\n");
       return(-1);
     }
-    // get some properties of the image
+    
+    // get the width/height and the frame rate of the video
     cv::Size refS( (int) capdev->get(cv::CAP_PROP_FRAME_WIDTH ),
                   (int) capdev->get(cv::CAP_PROP_FRAME_HEIGHT));
                   
     printf("Expected size: %d %d\n", refS.width, refS.height);
+
+    // create a window
     cv::namedWindow("Video", 1); // identifies a window
+
     cv::Mat frame;
     bool isGray = false;
 
     for(;;) {
       *capdev >> frame; // get a new frame from the camera, treat as a stream
 
-      if( frame.empty() ) {
+      if(frame.empty()) {
         printf("frame is empty\n");
         break;
       }
 
-      if (isGray) {
-          // Convert the frame to grayscale
-          cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
-      }
+      // if (isGray) {
+      //     // Convert the frame to grayscale
+      //     cv::cvtColor(frame, frame, cv::COLOR_BGR2GRAY);
+      // }
 
-      cv::imshow("Video", frame);
+      // cv::imshow("Video", frame);
 
       // see if there is a waiting keystroke
       char key = cv::waitKey(10);
@@ -47,8 +53,22 @@ int main(int argc, char *argv[]) {
           std::cout << "Image saved as captured_image.jpg" << std::endl;
       }
 
-      if (key == 'g' || key == 'G') {
+      // if (key == 'g' || key == 'G') {
+      //   isGray = !isGray;
+      // }
+      cv::Mat grayFrame;
+      grayFrame = cv::Mat::zeros(frame.size(), frame.type());
+      frame.copyTo(grayFrame);
+
+      if (isGray) {
+          std::cout << "function called" << std::endl;
+          greyscale_avg(frame, grayFrame);
+      }
+
+      if (key == 'a') {
         isGray = !isGray;
       }
+
+      cv::imshow("Video", grayFrame);
     }
 }
