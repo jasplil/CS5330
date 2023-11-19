@@ -21,7 +21,7 @@ int greyscaleAvg(const cv::Mat &src, cv::Mat &dst) {
   return (0);
 }
 
-int gaussianFilter(const cv::Mat &src, cv::Mat &dst) {
+int blur5x5(const cv::Mat &src, cv::Mat &dst) {
   cv::Mat temp = cv::Mat::zeros(src.size(), CV_8UC3);
   dst = cv::Mat::zeros(src.size(), CV_8UC3);
 
@@ -82,8 +82,145 @@ int gaussianFilter(const cv::Mat &src, cv::Mat &dst) {
   return (0);
 }
 
-int gradx( const cv::Mat &src, cv::Mat &dst ) {
+int sobelX3x3(const cv::Mat &src, cv::Mat &dst) {
+  cv::Mat temp = cv::Mat::zeros(src.size(), CV_16SC3);
+  int m = src.rows;
+  int n = src.cols;
 
+  int sobelxSum = 4;
+
+  // Vertical pass for {1,2,1} blue
+  for (int i = 1; i < m-1; i++) {
+    cv::Vec3s *tptr = temp.ptr<cv::Vec3s>(i);
+    const cv::Vec3b *rowAbove = src.ptr<cv::Vec3b>(i - 1);
+    const cv::Vec3b *currRow = src.ptr<cv::Vec3b>(i);
+    const cv::Vec3b *rowBelow = src.ptr<cv::Vec3b>(i + 1);
+    for (int j = 0; j < n; j++) {
+      for (int c = 0; c < 3; c++){
+        tptr[j][c] = (rowAbove[j][c] + currRow[j][c] * 2 + rowBelow[j][c]) / sobelxSum;
+      }
+    }
+  }
+
+  dst = cv::Mat::zeros(src.size(), CV_16SC3);
+
+  // Horizontal pass for {-1,0,1} 1st derivative
+  for (int i = 0; i < m; i++) {
+    cv::Vec3s *dptr = dst.ptr<cv::Vec3s>(i);
+    const cv::Vec3s *rptr = temp.ptr<cv::Vec3s>(i);
+    for (int j = 1; j < n - 1; j++) {
+      for (int c = 0; c < 3; c++) {
+        dptr[j][c] = (-1 * rptr[j - 1][c] + rptr[j + 1][c]) / 2;
+      }
+    }
+  }
+
+  return (0);
+}
+
+int sobelY3x3(const cv::Mat &src, cv::Mat &dst) {
+  cv::Mat temp = cv::Mat::zeros(src.size(), CV_16UC3);
+  int m = src.rows;
+  int n = src.cols;
+  
+  for (int i = 1; i < m - 1; i++) {
+    cv::Vec3s *tptr = temp.ptr<cv::Vec3s>(i);
+    const cv::Vec3b *rptrm1 = src.ptr<cv::Vec3b>(i - 1);
+    const cv::Vec3b *rptrp1 = src.ptr<cv::Vec3b>(i + 1);
+    for (int j = 0; j < n; j++) {
+      for (int c = 0; c < 3; c++) {
+        tptr[j][c] = (rptrm1[j][c] - rptrp1[j][c]) / 2;
+      }
+    }
+  }
+
+  dst = cv::Mat::zeros(src.size(), CV_16SC3);
+  for (int i = 0; i < m; i++) {
+    cv::Vec3s *dptr = dst.ptr<cv::Vec3s>(i);
+    const cv::Vec3s *rptr = temp.ptr<cv::Vec3s>(i);
+    for (int j = 1; j < n - 1; j++){
+      for (int c = 0; c < 3; c++) {
+        dptr[j][c] = (rptr[j - 1][c] + 2 * rptr[j][c] + rptr[j + 1][c]) / 4;
+      }
+    }
+  }
+
+  return (0);
+}
+
+int magnitude(cv::Mat &sx, cv::Mat &sy, cv::Mat &dst) {
+  dst = cv::Mat::zeros(sx.size(), CV_8UC3);
+  for (int i = 0; i < sx.rows; i++) {
+    cv::Vec3b *dptr = dst.ptr<cv::Vec3b>(i);
+    const cv::Vec3s *sxptr = sx.ptr<cv::Vec3s>(i);
+    const cv::Vec3s *syptr = sy.ptr<cv::Vec3s>(i);
+    for (int j = 0; j < sx.cols; j++) {
+      for (int c = 0; c < 3; c++) {
+        dptr[j][c] = std::sqrt(sxptr[j][c] * sxptr[j][c] + syptr[j][c] * syptr[j][c]);
+      }
+    }
+  }
+  return (0);
+}
+
+int blurQuantize(cv::Mat &src, cv::Mat &dst, int levels) {
+  cv::Mat blurImg;
+  blur5x5(src, blurImg);
+
+  int b = 255 / levels;
+  int *grid = new int[300];
+
+  for (int i = 0; i < 300; i++) {
+    grid[i] = (i / b) * b;
+  }
+
+  dst = cv::Mat::zeros(src.size(), CV_8UC3);
+
+  // quantize the image
+  for (int i = 0; i < src.rows; i++) {
+    cv::Vec3b *dptr = dst.ptr<cv::Vec3b>(i);
+    const cv::Vec3b *rptr = blurImg.ptr<cv::Vec3b>(i);
+    for (int j = 0; j < src.cols; j++) {
+      for (int c = 0; c < 3; c++) {
+        dptr[j][c] = grid[rptr[j][c]];
+      }
+    }
+  }
+
+  return (0);
+}
+
+int cartoon(cv::Mat &src, cv::Mat &dst, int levels, int magThreshold) {
+  cv::Mat sobelx;
+  sobelX3x3(src, sobelx);
+  cv::Mat sobely;
+  sobelY3x3(src, sobely);
+  cv::Mat mag;
+  magnitude(sobelx, sobely, mag);
+  cv::Mat quantize;
+  blurQuantize(src, quantize, levels);
+
+  dst = cv::Mat::zeros(src.size(), CV_8UC3);
+
+  for (int i = 0; i < src.rows; i++) {
+    cv::Vec3b *dptr = dst.ptr<cv::Vec3b>(i);
+    cv::Vec3b *mptr = mag.ptr<cv::Vec3b>(i);
+    cv::Vec3b *qptr = quantize.ptr<cv::Vec3b>(i);
+
+    for (int j = 0; j < src.cols; j++) {
+      for (int c = 0; c < 3; c++) {
+        // if magnitude is less than threshold, use quantized image
+        if (mptr[j][c] <= magThreshold) {
+          dptr[j][c] = qptr[j][c];
+        }
+      }
+    }
+  }
+
+  return (0);
+}
+
+int gradx( const cv::Mat &src, cv::Mat &dst ) {
   // allocate the dst image
   // bits-Type-C-#channels
   // 8UC1  8-bit unsigned char with 1 channel (greyscale image)
@@ -98,8 +235,6 @@ int gradx( const cv::Mat &src, cv::Mat &dst ) {
   // -2 0 2
   // -1 0 1
   for(int i=1;i<src.rows-1;i++) {
-
-    // set up 3 row points (above, middle, below)
     const cv::Vec3b *rptrm1 = src.ptr<cv::Vec3b>(i-1);
     const cv::Vec3b *rptr = src.ptr<cv::Vec3b>(i);
     const cv::Vec3b *rptrp1 = src.ptr<cv::Vec3b>(i+1);
@@ -112,7 +247,7 @@ int gradx( const cv::Mat &src, cv::Mat &dst ) {
       // over all color channels
       for(int c=0;c<2;c++) {
 
-	dptr[j][c] = ( -1 * (short)rptrm1[j-1][c] + 1 * rptrm1[j+1][c] +
+	      dptr[j][c] = ( -1 * (short)rptrm1[j-1][c] + 1 * rptrm1[j+1][c] +
 		       -2 * rptr[j-1][c]   + 2 * rptr[j+1][c]   +
 		       -1 * rptrp1[j-1][c] + 1 * rptrp1[j+1][c] ) / 4;
 	        // divide by 4 to normalize back to [-255,255]
