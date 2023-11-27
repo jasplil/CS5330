@@ -1,7 +1,7 @@
 #include <cstdio>
 #include <cstring>
 #include <opencv2/opencv.hpp>
-#include "filter.h"
+#include "filter.hpp"
 
 // using namespace cv
 
