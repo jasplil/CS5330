@@ -6,7 +6,7 @@
 #include "matchMethods.hpp"
 using namespace std;
 
-int getCenter(cv::Mat const target, cv::Mat &targetFeatureVector) {
+int getCenter(cv::Mat const target, cv::Mat &targetVector) {
   int m = target.rows;
   int n = target.cols;
 
@@ -19,33 +19,27 @@ int getCenter(cv::Mat const target, cv::Mat &targetFeatureVector) {
   int centerR = m / 2;
   int centerCol = n / 2;
   // get the center 9x9 square of the target image
-  targetFeatureVector = target(cv::Rect(centerCol - 4, centerR - 4, 9, 9));
+  targetVector = target(cv::Rect(centerCol - 4, centerR - 4, 9, 9));
 
   return (0);
 }
 
-float sumDiff(cv::Mat const featureVector1, cv::Mat const featureVector2)
-{
-  // error checking
-  if (featureVector1.rows != featureVector2.rows || featureVector1.cols != featureVector2.cols)
-  {
-    printf("error: feature vectors have different dimensions\n");
+float sumDiff(cv::Mat const v1, cv::Mat const v2) {
+  if (v1.rows != v2.rows || v1.cols != v2.cols) {
+    printf("error: size of feature vectors dont match\n");
     return (-1);
   }
 
   // calculate the sum-of-squared-differences for each pixel at three channels
   float ssd = 0.0;
-  for (int i = 0; i < featureVector1.rows; i++)
-  {
+  for (int i = 0; i < v1.rows; i++) {
     // get the ith row of the feature vectors
-    const cv::Vec3b *row1 = featureVector1.ptr<cv::Vec3b>(i);
-    const cv::Vec3b *row2 = featureVector2.ptr<cv::Vec3b>(i);
+    const cv::Vec3b *r1 = v1.ptr<cv::Vec3b>(i);
+    const cv::Vec3b *r2 = v2.ptr<cv::Vec3b>(i);
 
-    for (int j = 0; j < featureVector1.cols; j++)
-    {
-      for (int k = 0; k < 3; k++)
-      {
-        float diff = row1[j][k] - row2[j][k];
+    for (int j = 0; j < v1.cols; j++) {
+      for (int k = 0; k < 3; k++) {
+        float diff = r1[j][k] - r2[j][k];
         ssd += diff * diff;
       }
     }
