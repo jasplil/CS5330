@@ -84,13 +84,6 @@ int main(int argc, char *argv[]) {
             {
               return a.second < b.second;
             });
-  
-  // // sort the vector - ascending order
-  // std::sort(distanceArr.begin(), distanceArr.end(),
-  //           [](std::pair<std::string, float> const &a, std::pair<std::string, float> const &b)
-  //           {
-  //             return a.second < b.second;
-  //           });
 
   // get the output number
   int resNum = atoi(argv[4]);

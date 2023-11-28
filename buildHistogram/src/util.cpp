@@ -68,9 +68,21 @@ float histogramIntersection(cv::Mat const hist1, cv::Mat const hist2) {
       intersection += std::min(row1[j], row2[j]);
     }
   }
-
-  // return the histogram distance, which is 1 - intersection
+  
   return 1.0 - intersection;
+}
+
+float euclideanDistance(cv::Mat const hist1, cv::Mat const hist2) {
+  float distance = 0.0;
+  for (int i = 0; i < hist1.rows; i++) {
+    const float *row1 = hist1.ptr<float>(i);
+    const float *row2 = hist2.ptr<float>(i);
+    for (int j = 0; j < hist1.cols; j++) {
+      distance += (row1[j] - row2[j]) * (row1[j] - row2[j]);
+    }
+  }
+
+  return std::sqrt(distance);
 }
 
 int calculateNormalizedHistogram(cv::Mat const target, cv::Mat &res, int histSize) {
@@ -110,6 +122,45 @@ int calculateNormalizedHistogram(cv::Mat const target, cv::Mat &res, int histSiz
 
   // normalize histogram
   res /= (totalPixels);
+
+  return (0);
+}
+
+int calcRGBHistogram(cv::Mat const target, cv::Mat &targetHistogram, int histSize) {
+  if (histSize < 1 || histSize > 256) {
+    printf("error: out of bound\n");
+    return (-1);
+  }
+
+  // allocate the histogram as 2D one channels floating point array
+  // and initialzed to zero
+  targetHistogram = cv::Mat::zeros(cv::Size(histSize * histSize * histSize, 1), CV_32FC1);
+
+  // build the histogram
+  for (int i = 0; i < target.rows; i++)
+  {
+    // get the ith row of the feature vectors
+    const cv::Vec3b *row = target.ptr<cv::Vec3b>(i);
+
+    for (int j = 0; j < target.cols; j++)
+    {
+      // get each channel
+      float B = row[j][0];
+      float G = row[j][1];
+      float R = row[j][2];
+
+      // compute indexes
+      int bIndex = (int)(B / 255 * (histSize - 1) + 0.5); // rounds to nearest value
+      int gIndex = (int)(G / 255 * (histSize - 1) + 0.5);
+      int rIndex = (int)(R / 255 * (histSize - 1) + 0.5);
+
+      // increment the histogram
+      targetHistogram.at<float>(0, bIndex * histSize * histSize + gIndex * histSize + rIndex)++;
+    }
+  }
+
+  // normalize histogram by divided by the number of pixels, which makes it a probability
+  targetHistogram /= (target.rows * target.cols);
 
   return (0);
 }

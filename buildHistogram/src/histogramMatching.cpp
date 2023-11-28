@@ -15,7 +15,8 @@ int rgChromaticityMatching(cv::Mat const target, std::vector<std::pair<std::stri
   for (int i = 0; i < imageDatabase.size(); i++) {
     cv::Mat imageHistogram;
     calculateNormalizedHistogram(imageDatabase[i].second, imageHistogram, 16);
-    float distance = histogramIntersection(targetHistogram, imageHistogram);
+    // float distance = histogramIntersection(targetHistogram, imageHistogram);
+    float distance = euclideanDistance(targetHistogram, imageHistogram);
     printf("distance: %f\n", distance);
     distanceArr.push_back(std::make_pair(imageDatabase[i].first, distance));
   }
