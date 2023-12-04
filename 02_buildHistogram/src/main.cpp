@@ -67,6 +67,8 @@ int main(int argc, char *argv[]) {
     baselineMatching(target, imageDatabase, distanceArr);
   } else if (matchingMethod == "rgChromaticity") {
     rgChromaticityMatching(target, imageDatabase, distanceArr, 16);
+  } else if (matchingMethod == "rgbHistogram") {
+    topBtmRGBHistogramMatching(target, imageDatabase, distanceArr, 8);
   }
   
   else {

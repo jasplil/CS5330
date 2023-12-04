@@ -121,29 +121,23 @@ int calculateNormalizedHistogram(cv::Mat const target, cv::Mat &res, int histSiz
   }
 
   // normalize histogram
-  res /= (totalPixels);
+  res /= totalPixels;
 
   return (0);
 }
 
-int calcRGBHistogram(cv::Mat const target, cv::Mat &targetHistogram, int histSize) {
+int calcRGBHistogram(cv::Mat const target, cv::Mat &res, int histSize) {
   if (histSize < 1 || histSize > 256) {
     printf("error: out of bound\n");
     return (-1);
   }
 
-  // allocate the histogram as 2D one channels floating point array
-  // and initialzed to zero
-  targetHistogram = cv::Mat::zeros(cv::Size(histSize * histSize * histSize, 1), CV_32FC1);
+  res = cv::Mat::zeros(cv::Size(histSize * histSize * histSize, 1), CV_32FC1);
+  int totalPixels = target.rows * target.cols;
 
-  // build the histogram
-  for (int i = 0; i < target.rows; i++)
-  {
-    // get the ith row of the feature vectors
+  for (int i = 0; i < target.rows; i++) {
     const cv::Vec3b *row = target.ptr<cv::Vec3b>(i);
-
-    for (int j = 0; j < target.cols; j++)
-    {
+    for (int j = 0; j < target.cols; j++) {
       // get each channel
       float B = row[j][0];
       float G = row[j][1];
@@ -154,13 +148,11 @@ int calcRGBHistogram(cv::Mat const target, cv::Mat &targetHistogram, int histSiz
       int gIndex = (int)(G / 255 * (histSize - 1) + 0.5);
       int rIndex = (int)(R / 255 * (histSize - 1) + 0.5);
 
-      // increment the histogram
-      targetHistogram.at<float>(0, bIndex * histSize * histSize + gIndex * histSize + rIndex)++;
+      res.at<float>(0, bIndex * histSize * histSize + gIndex * histSize + rIndex)++;
     }
   }
 
-  // normalize histogram by divided by the number of pixels, which makes it a probability
-  targetHistogram /= (target.rows * target.cols);
+  res /= totalPixels;
 
   return (0);
 }
