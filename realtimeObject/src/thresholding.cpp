@@ -28,7 +28,7 @@ int thresholding(const cv::Mat &src, cv::Mat &dst) {
   int clusterCount = 2;
   int attempts = 3;
 
-  cv::TermCriteria criteria(cv::TermCriteria::EPS + cv::TermCriteria::COUNT, 100, 0.01);
+  cv::TermCriteria criteria(cv::TermCriteria::EPS + cv::TermCriteria::COUNT, 10, 1.0);
   cv::kmeans(samples, clusterCount, labels, criteria, attempts, cv::KMEANS_PP_CENTERS, centers);
   float threshold = (centers.at<float>(0) + centers.at<float>(1)) / 2.0f;
 

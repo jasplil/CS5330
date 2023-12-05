@@ -39,8 +39,42 @@ int main(int argc, char *argv[]) {
   cv::Mat thresholdedImg;
   thresholding(invertedImg, thresholdedImg);
 
+  cv::Mat cleanedImage;
+  cv::morphologyEx(thresholdedImg, cleanedImage, cv::MORPH_CLOSE, cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(5, 5)));
+
+  cv::Mat labels, stats, centroids;
+  int output = cv::connectedComponentsWithStats(cleanedImage, labels, stats, centroids, 8, CV_32S);
+
+  std::vector<int> sortedLabels = std::vector<int>(stats.rows);
+  for (int i = 0; i < sortedLabels.size(); ++i) {
+    sortedLabels[i] = i;
+  }
+
+  int columnToSortBy = cv::CC_STAT_AREA;
+  std::sort(sortedLabels.begin(), sortedLabels.end(), [&stats, columnToSortBy](int i, int j)
+            { return stats.at<int>(i, columnToSortBy) > stats.at<int>(j, columnToSortBy); });
+
+  for (int i = 0; i < 10; ++i) {
+    std::cout << "label: " << sortedLabels[i] << ", area: " << stats.at<int>(sortedLabels[i], cv::CC_STAT_AREA) << std::endl;
+  }
+
+  cv::Mat dst = cv::Mat(labels.rows, labels.cols, CV_8UC3, cv::Scalar(0, 0, 0));
+  for (int i = 0; i < dst.rows; ++i) {
+    int const *labelsRowPtr = labels.ptr<int>(i);
+    cv::Vec3b *segmentedImageRowPtr = dst.ptr<cv::Vec3b>(i);
+    for (int j = 0; j < dst.cols; ++j) {
+      int label = labelsRowPtr[j];
+      if (label == 0)
+        continue;
+      if (stats.at<int>(label, cv::CC_STAT_AREA) >= 968)
+        // segmentedImageRowPtr[j] = cv::Vec3b(255, 182, 193);
+        segmentedImageRowPtr[j] = cv::Vec3b(255, 255, 255);
+    }
+  }
+
+
   cv::namedWindow("original", 1);
-  cv::imshow("original", thresholdedImg);
+  cv::imshow("original", cleanedImage);
 
   while (true) {
     int key = cv::waitKey(1);
